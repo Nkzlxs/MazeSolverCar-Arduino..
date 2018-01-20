@@ -13,7 +13,6 @@ Cell::Cell(float xpos, float ypos):m_xpos(xpos),m_ypos(ypos)
 	*/
 	if (this->m_status[0])  this->m_sides.push_back(Line(xpos, ypos, w, sf::Color::Black, 1));
 
-
 	if (this->m_status[1])  this->m_sides.push_back(Line(xpos, ypos, w, sf::Color::Black, 0));
 
 	if (this->m_status[2])  this->m_sides.push_back(Line(xpos + w, ypos, w, sf::Color::Black, 0));
@@ -56,10 +55,10 @@ void Cell::display(sf::RenderWindow & window1)
 {
 	for (int i = 0;i < 4; i++) {
 		if (!m_status[i])
-			m_sides[i] = null;
+			m_sides[i] = null; //setting Line isClear = 0
 	}
 	for (Line side : m_sides) {
-		if (side != null)
+		if (side != null) //if Line isClear = 1 , draw it
 			window1.draw(side.m_self);
 	}
 	window1.draw(a);
