@@ -84,20 +84,15 @@ void addNeighbours(int numY) { //tl bl tr br mt ml mr mb m
 	for (int n = 0;n < cells.size();n++) {
 		if (testforCell(n, tl)) {
 			cells[n].addNeighbours(0, 0, 1, 1);
-			cells[n].isCorner = 0;
-
 		}
 		if (testforCell(n, bl)) {
 			cells[n].addNeighbours(1, 0, 1, 0);
-			cells[n].isCorner = 1;
 		}
 		if (testforCell(n, tr)) {
 			cells[n].addNeighbours(0, 1, 0, 1);
-			cells[n].isCorner = 2;
 		}
 		if (testforCell(n, br)) {
 			cells[n].addNeighbours(1, 1, 0, 0);
-			cells[n].isCorner = 3;
 		}
 		if (testforCell(n, mt)) {
 			cells[n].addNeighbours(0, 1, 1, 1);
