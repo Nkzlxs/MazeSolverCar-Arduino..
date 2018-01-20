@@ -117,6 +117,7 @@ void addNeighbours(int numY) { //tl bl tr br mt ml mr mb m
 		}
 	}
 }
+
 //For Debugging uses------------------------------
 void displayNeighbours(int n) {
 	for (int i = 0;i < 4;i++) {
@@ -131,6 +132,7 @@ void displayNeighbours(int n) {
 	}
 }
 //------------------------------------------------
+
 //Copied from http://www.learncpp.com/cpp-tutorial/59-random-number-generation/
 int random(int min, int max)
 {
@@ -161,7 +163,8 @@ void startMoving() {
 		}
 		//if (counter >= 1)
 		//	break;
-		if (counter >= 1) {
+		
+		if (counter >= 1) { //if a cell was "trapped"
 			stack.pop_back();
 			if (stack.size() == 0) {
 				current = &cells[initPos];
@@ -328,8 +331,10 @@ int main() {
 	}
 	//for each cell, make its surrounding valid cell as neighbour
 	addNeighbours(numY);
+	
 	//begin generating the maze
 	startMoving();
+	
 	//create a RenderWindow named window1
 	sf::RenderWindow window1(sf::VideoMode(width, height), "hi");
 	while (window1.isOpen()) {
@@ -342,7 +347,7 @@ int main() {
 			if (evt.type == sf::Event::KeyPressed) {
 				if (evt.key.code == sf::Keyboard::A&&y == 0) {
 
-					z = random(0, cells.size());
+					z = random(0, cells.size()); 
 					for (int n = 0;n < cells.size();n++) {
 						cells[n].isVisited = false;
 						cells[n].drawRect(sf::Vector2f(0, 0));
@@ -371,3 +376,5 @@ int main() {
 
 	return 0;
 }
+
+//if you feel messy, pls comment
