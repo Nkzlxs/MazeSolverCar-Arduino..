@@ -12,12 +12,16 @@ Cell::Cell(float xpos, float ypos):m_xpos(xpos),m_ypos(ypos)
 	  btm
 	*/
 	if (this->m_status[0])  this->m_sides.push_back(Line(xpos, ypos, w, sf::Color::Black, 1));
+	//create a rectangle shape at this cell's xposition and yposition with length of w(20),0 degree rotation
 
 	if (this->m_status[1])  this->m_sides.push_back(Line(xpos, ypos, w, sf::Color::Black, 0));
+	//create a rectangle shape at this cell's xposition and yposition with length of w(20),90 degree rotation
 
 	if (this->m_status[2])  this->m_sides.push_back(Line(xpos + w, ypos, w, sf::Color::Black, 0));
+	//create a rectangle shape at this cell's (xposition+w(20)) and yposition with length of w(20),90 degree rotation
 
 	if (this->m_status[3])  this->m_sides.push_back(Line(xpos, ypos + w, w, sf::Color::Black, 1));
+	//create a rectangle shape at this cell's xposition and (yposition+w(20)) with length of w(20),0 degree rotation
 
 }
 
