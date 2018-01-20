@@ -1,15 +1,18 @@
-﻿#include <SFML\Graphics.hpp>
-#include "Cell.h"
-#include <vector>
-#include "defines.h"
-#include <iostream>
-#include <time.h>
-#include <random>
-#include <fstream>
+//Main Loop of the program Nkzlxs.19/1/2018
+//Thanks to Daniel Shiffman Example using p5.js https://github.com/CodingTrain/Rainbow-Code/tree/master/CodingChallenges/CC_10_Maze_DFS_p5.js
+
+#include <SFML\Graphics.hpp> //sfml
+#include "Cell.h" //Cell class
+#include <vector> //array
+#include "defines.h" //make the variable "w" globally
+#include <iostream> //text output
+#include <time.h> //for time(0)
+#include <random> //i think this cpp file didnt use this library
+#include <fstream> //for debugging
 
 std::vector <Cell> cells;
 std::vector <int> stack;
-std::ofstream myfile;
+std::ofstream myfile; //for debugging
 Cell *current;
 int initPos = 0;
 int z = initPos;
@@ -20,15 +23,15 @@ enum Directions {
 	btm
 };
 enum {
-	tl = 0,
-	bl = 1,
-	tr = 2,
-	br = 3,
-	mt = 4,
-	ml = 5,
-	mr = 6,
-	mb = 7,
-	m = 8
+	tl = 0,  //top-left corner cell
+	bl = 1,  //bottom-left corner cell
+	tr = 2,  //top-right corner cell
+	br = 3,  //bottom-right corner cell
+	mt = 4,  //mid-top cells
+	ml = 5,  //mid-left cells
+	mr = 6,  //mid-right cells
+	mb = 7,  //mid-btm cells
+	m = 8    //mid cells
 };
 int width, height, numX, numY;
 void displayNeighbours(int n);
@@ -114,6 +117,7 @@ void addNeighbours(int numY) { //tl bl tr br mt ml mr mb m
 		}
 	}
 }
+//For Debugging uses------------------------------
 void displayNeighbours(int n) {
 	for (int i = 0;i < 4;i++) {
 		if (cells[n].m_neighbours[0])
@@ -126,11 +130,16 @@ void displayNeighbours(int n) {
 			cells[n + 1].m_sides[i].m_self.setFillColor(sf::Color::Blue);
 	}
 }
+//------------------------------------------------
+//Copied from http://www.learncpp.com/cpp-tutorial/59-random-number-generation/
 int random(int min, int max)
 {
 	static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
 	return min + static_cast<int>((max - min + 1) * (rand() * fraction));
 }
+//haha
+
+//The Recursive backtracking 
 void startMoving() {
 	std::cout << "\n Pathseeker Moving!\n```Starting at: " << z << "\n";
 	int x;
@@ -142,6 +151,7 @@ void startMoving() {
 	while (1) {
 
 		current->isVisited = true;
+		//getting the current cell direction
 		switch (direction) {
 		case Directions::top: {getCell(z, 3).m_status[Directions::top] = false;getCell(z, 4).m_status[Directions::btm] = false;std::cout << "Going Top!\n";break;}
 		case Directions::left: {getCell(z, 2).m_status[Directions::left] = false;getCell(z, 4).m_status[Directions::right] = false;std::cout << "Going Left!\n";break;}
@@ -162,16 +172,11 @@ void startMoving() {
 			z = stack.back();
 			counter = 0;
 		}
-
-
-
-
-
 		std::cout << "----------------------------t: " << counter2 << "----------------------------\n";
 		counter2++;
 
 		while (1) {
-
+			//get random number between 0 to 3
 			x = random(0, 3);
 			std::cout << "new X: " << x << "\n";
 
@@ -209,7 +214,7 @@ void startMoving() {
 				break;
 			}
 
-			//Test for trap
+			//Test for trap **means the surrounding neighbours were all visited
 			else if (testforCell(z, m)) {
 				if (getCell(z, 0).isVisited && getCell(z, 1).isVisited&& getCell(z, 2).isVisited&& getCell(z, 3).isVisited) {
 					std::cout << "\nTrapped in mid,bcuz 4 neighbours visited\n";
@@ -286,11 +291,9 @@ void startMoving() {
 			else {
 				std::cout << " INFINITE LOOP! \n";
 			}
-
-
+			//I think i didnt write the code above well...(Looks redundant)
 		}
 	}
-
 	std::cout << "\nLOOP BROKE!\n";
 	/*for (Cell &cell : cells) {
 		if (cell.isVisited) {s
@@ -299,30 +302,35 @@ void startMoving() {
 	}*/
 	current->drawRect(sf::Vector2f(w, w), sf::Color::Red);
 	
-	myfile.open("Loops.txt");
-	myfile <<"\nLooped "<< counter2 <<" times"<< "\n";
-	myfile.close();
+	myfile.open("Loops.txt");				//for debugging
+	myfile <<"\nLooped "<< counter2 <<" times"<< "\n";      //for debugging
+	myfile.close();						//for debugging
 	//for (int i = 0;i < 4;i++)
 	//	current->m_sides[i].m_self.setFillColor(sf::Color::Red);
 }
+//Let user choose their screen size
 void getScreenSize() {
 	do { std::cout << "Enter Width(px): ";std::cin >> width;if (std::cin.fail()||width<40) { std::cout << "Invalid Input\n";std::cin.clear();std::cin.ignore(32767, '\n');  } } while (width < 40);
 	do { std::cout << "Enter Height(px): ";std::cin >> height;if (std::cin.fail() || height<40) { std::cout << "Invalid Input\n";std::cin.clear();std::cin.ignore(32767, '\n'); } } while (height < 40);
 }
 int main() {
-
 	getScreenSize();
+	//numX is how many cells on the x-axis,numY is how many cells on the y-axis
 	numX = width / w, numY = height / w;
-
-
 	srand(time(0));
+	
+	//generating the array and make each element a new Cell class
 	for (int x = 0;x < numX;x++) {
 		for (int y = 0;y < numY;y++) {
 			cells.push_back(Cell(x*w, y*w));
+			//pushback a Cell class with (x-position,y-position) as constructor.
 		}
 	}
+	//for each cell, make its surrounding valid cell as neighbour
 	addNeighbours(numY);
+	//begin generating the maze
 	startMoving();
+	//create a RenderWindow named window1
 	sf::RenderWindow window1(sf::VideoMode(width, height), "hi");
 	while (window1.isOpen()) {
 		sf::Event evt;
@@ -340,12 +348,8 @@ int main() {
 						cells[n].drawRect(sf::Vector2f(0, 0));
 						for (int i = 0;i < 4;i++)
 							cells[n].m_status[i] = true;
-
-
 					}
 					std::cout << "redoing" << std::endl;
-
-
 					startMoving();
 					y = 1;
 				}
