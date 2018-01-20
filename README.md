@@ -2,7 +2,7 @@
 For school project uses, i think i will simulate with computer first, if icould do that then it will be moving to arduino.
 
 
-Inspired by an Event called "Micromouse"
+Inspired by an Event called "Micromouse" https://en.wikipedia.org/wiki/Micromouse
 then i decided to do this project...
 
 My plan:
