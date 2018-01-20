@@ -9,16 +9,21 @@ class Cell
 {
 
 public:
-	sf::RectangleShape a;
-	float m_xpos;
-	float m_ypos;
+	sf::RectangleShape a; //a rectangleshape of this cell
+	float m_xpos;// x position of this cell
+	float m_ypos;// y position of this cell
 
+	
+	std::vector<Line> m_sides; //The "sides" of this cell
+	short isCorner = 5;//redundant
+	
+	
 	//top left right btm
-	std::vector<Line> m_sides;
-	short isCorner = 5;
-	bool m_neighbours[4]{ false,false,false,false };
+	bool m_neighbours[4]{ false,false,false,false };//this cell's surrounding neighbours
+	
 	bool isVisited = false;
-	bool m_status[4]{ true ,true ,true ,true };
+	
+	bool m_status[4]{ true ,true ,true ,true };//the status of this cell's "side"
 
 
 
